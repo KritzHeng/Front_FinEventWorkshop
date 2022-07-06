@@ -12,10 +12,10 @@ import {
 import {
   getNetworkCurrency,
   getNetworkName,
-  getNetworkTokens,
+  // getNetworkTokens,
 } from "../constants/network-id";
 import { formatEther, formatUnits } from "ethers/lib/utils";
-import { Token } from "../types/token.type";
+// import { Token } from "../types/token.type";
 import Metamask from './Metamask';
 import axios from "axios";
 
@@ -24,6 +24,9 @@ const Home: NextPage = () => {
   const [address, setAddress] = useState<string | null>(null);
   const [network, setNetwork] = useState<string | null>(null);
   const [balance, setBalance] = useState<string | null>(null);
+
+
+
 
   const [tokenBalances, setTokenBalances] = useState<Record<string, string>>(
     {}
@@ -38,31 +41,31 @@ const Home: NextPage = () => {
     return contract.balanceOf(ownerAddress);
   };
 
-  const addTokenToWallet = async (token: Token) => {
-    try {
-      // wasAdded is a boolean. Like any RPC method, an error may be thrown.
-      const wasAdded = await window.ethereum.request({
-        method: "wallet_watchAsset",
-        params: {
-          type: "ERC20", // Initially only supports ERC20, but eventually more!
-          options: {
-            address: token.address, // The address that the token is at.
-            symbol: token.symbol, // A ticker symbol or shorthand, up to 5 chars.
-            decimals: token.decimals, // The number of decimals in the token
-            image: token.imageUrl, // A string url of the token logo
-          },
-        },
-      });
+  // const addTokenToWallet = async (token: Token) => {
+  //   try {
+  //     // wasAdded is a boolean. Like any RPC method, an error may be thrown.
+  //     const wasAdded = await window.ethereum.request({
+  //       method: "wallet_watchAsset",
+  //       params: {
+  //         type: "ERC20", // Initially only supports ERC20, but eventually more!
+  //         options: {
+  //           address: token.address, // The address that the token is at.
+  //           symbol: token.symbol, // A ticker symbol or shorthand, up to 5 chars.
+  //           decimals: token.decimals, // The number of decimals in the token
+  //           image: token.imageUrl, // A string url of the token logo
+  //         },
+  //       },
+  //     });
 
-      if (wasAdded) {
-        console.log("Thanks for your interest!");
-      } else {
-        console.log("Your loss!");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //     if (wasAdded) {
+  //       console.log("Thanks for your interest!");
+  //     } else {
+  //       console.log("Your loss!");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const loadAccountData = async () => {
     const addr = getWalletAddress();
@@ -74,20 +77,20 @@ const Home: NextPage = () => {
     const bal = await getBalance(addr);
     if (bal) setBalance(formatEther(bal));
 
-    const tokenList = getNetworkTokens(chainId);
+    // const tokenList = getNetworkTokens(chainId);
 
-    const tokenBalList = await Promise.all(
-      tokenList.map((token) =>
-        getTokenBalance(token.address, addr).then((res) =>
-          formatUnits(res, token.decimals)
-        )
-      )
-    );
+    // const tokenBalList = await Promise.all(
+    //   tokenList.map((token) =>
+    //     getTokenBalance(token.address, addr).then((res) =>
+    //       formatUnits(res, token.decimals)
+    //     )
+    //   )
+    // );
 
-    tokenList.forEach((token, i) => {
-      tokenBalances[token.symbol] = tokenBalList[i];
-    });
-    setTokenBalances({ ...tokenBalances });
+    // tokenList.forEach((token, i) => {
+    //   tokenBalances[token.symbol] = tokenBalList[i];
+    // });
+    // setTokenBalances({ ...tokenBalances });
   };
 
   useEffect(() => {
