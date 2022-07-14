@@ -43,11 +43,11 @@ export const getBalance = (address: string) => {
 
 
 // -------------------readDataFromSmartContract----------------------------
-export const getName = () => {
-  const provider = new ethers.providers.Web3Provider(getEthereum())
-  const nameContract = new ethers.Contract("0x5e223419084f5F89d14e61e6E7022f605dcA57a0", abi, provider);
-  return nameContract.name;
-};
+// export const getName = () => {
+//   const provider = new ethers.providers.Web3Provider(getEthereum())
+//   const nameContract = new ethers.Contract("0x5e223419084f5F89d14e61e6E7022f605dcA57a0", abi, provider);
+//   return nameContract.name;
+// };
 // const usdtContract = new ethers.Contract(usdtAddress, usdtAbi, provider);
     
 // const name = await usdtContract.name()
