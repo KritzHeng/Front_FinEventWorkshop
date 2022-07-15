@@ -74,7 +74,7 @@ const Home: NextPage = () => {
     const tokenBalance = await getTokenBalance(addr_contract, addr).then(
       (res) => formatUnits(res, 0)
     );
-    console.log(tokenBalance);
+    // console.log(tokenBalance);
 
     const provider = getProvider()!;
     const signer = provider.getSigner();
@@ -87,8 +87,8 @@ const Home: NextPage = () => {
       const txResponse = await contract
         .publicMint(1, {
           value: ethers.utils.parseEther("0.01"),
-          gasPrice: 300000,
-          gasLimit: 9000000,
+          // gasPrice: 300000,
+          // gasLimit: 9000000,
         })
         .then((res: any) => {
           console.log(`Transaction hash1: ${res.hash}`);
@@ -110,31 +110,51 @@ const Home: NextPage = () => {
 
     const name = await getNameToken();
     setNameToken(name);
-    console.log(name);
+    // console.log(name);
 
     const maxSupply = await getMaxSupply().then((res) => formatUnits(res, 0));
     setMaxSupply(maxSupply);
-    console.log(maxSupply);
+    // console.log(maxSupply);
 
     const currentSup = await getCurrentSupply().then((res) =>
       formatUnits(res, 0)
     );
     setCurrentSupply(currentSup);
-    console.log(currentSup);
+    // console.log(currentSup);
+
+    if (addr) {
+      const tokenBalances = await getTokenBalance(addr_contract, addr).then(
+        (res) => formatUnits(res, 0)
+      );
+      console.log(tokenBalances);
+    }
+
 
   };
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const numberCounter = await getCurrentSupply().then((res) =>
+        formatUnits(res, 0)
+      );
+      console.log(txHash);
+      setCurrentSupply(numberCounter);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [currentSupply]);
 
   useEffect(() => {
     loadAccountData();
     setStatus(null);
     const handleAccountChange = (addresses: string[]) => {
       setAddress(addresses[0]);
+      setTxHash(null);
       setStatus(null);
       loadAccountData();
     };
-
+    
     const handleNetworkChange = (networkId: string) => {
       setNetwork(networkId);
+      setTxHash(null);
       setStatus(null);
       loadAccountData();
     };
